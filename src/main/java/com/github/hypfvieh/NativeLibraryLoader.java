@@ -8,11 +8,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Helper class to load a native library either from a given path, the classpath or system library path.
  */
 public final class NativeLibraryLoader {
+
+    private static final AtomicBoolean ENABLED = new AtomicBoolean(true);
+
+    public static void setEnabled(boolean _enabled) {
+        ENABLED.set(_enabled);
+    }
 
     /**
      * Private constructor - this class will never be instanced
@@ -27,7 +34,9 @@ public final class NativeLibraryLoader {
      * @param _searchPathes pathes to search
      */
     public static void loadLibrary(String _libName, String... _searchPathes) {
-
+        if (!ENABLED.get()) {
+            return;
+        }
         if (_searchPathes != null && _searchPathes.length > 0) {
             findProperNativeLib(_libName, Arrays.asList(_searchPathes));
         }
