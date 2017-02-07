@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.github.hypfvieh.NativeLibraryLoader;
+import com.github.hypfvieh.system.NativeLibraryLoader;
 
 import cx.ath.matthew.debug.Debug;
 
@@ -40,7 +40,7 @@ import cx.ath.matthew.debug.Debug;
  */
 public class UnixSocket implements Closeable {
     static {
-        NativeLibraryLoader.loadLibrary("libunix-java.so", "lib/");
+        NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "lib/");
     }
 
     private UnixSocketAddress address   = null;

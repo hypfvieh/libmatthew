@@ -29,7 +29,7 @@ package cx.ath.matthew.unix;
 import java.io.Closeable;
 import java.io.IOException;
 
-import com.github.hypfvieh.NativeLibraryLoader;
+import com.github.hypfvieh.system.NativeLibraryLoader;
 
 /**
  * Represents a listening UNIX Socket.
@@ -37,7 +37,7 @@ import com.github.hypfvieh.NativeLibraryLoader;
 public class UnixServerSocket implements Closeable {
     static {
         //System.loadLibrary("unix-java");
-        NativeLibraryLoader.loadLibrary("libunix-java.so", "lib/");
+        NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "lib/");
     }
 
     private UnixSocketAddress address = null;
