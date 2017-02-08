@@ -7,7 +7,7 @@
 
 	<groupId>com.github.hypfvieh</groupId>
 	<artifactId>libmatthew</artifactId>
-	<version>0.8.1-SNAPSHOT</version>
+	<version>0.8.1</version>
 
 	<name>${project.artifactId}}</name>
 
@@ -21,39 +21,12 @@
 		- Split test classes to test classpath
 		- Introduced JUnit
 		- Removed the whole CGI package, it should never ever been used these days
-
 	</description>
-
- 	<licenses>
-		<license>
-			<name>MIT License</name>
-			<url>http://www.opensource.org/licenses/mit-license.php</url>
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>matthew</id>
-			<name>Matthew Johnson</name>
-			<email>src@matthew.ath.cx</email>
-		</developer>
-		<developer>
-			<id>hypfvieh</id>
-			<name>David M.</name>
-			<email>hypfvieh@googlemail.com</email>
-		</developer>
-	</developers>
 
 	<properties>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
-
-	<scm>
-		<connection>scm:git:https://github.com/hypfvieh/dbus-java.git</connection>
-		<developerConnection>scm:git:https://github.com/hypfvieh/dbus-java.git</developerConnection>
-		<url>https://github.com/hypfvieh/dbus-java.git</url>
-	</scm>
 
 	<dependencies>
 		<dependency>
@@ -75,4 +48,30 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<scm>
+		<connection>scm:git:https://github.com/hypfvieh/libmatthew.git</connection>
+		<developerConnection>scm:git:https://github.com/hypfvieh/libmatthew.git</developerConnection>
+		<url>https://github.com/hypfvieh/libmatthew.git</url>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>matthew</id>
+			<name>Matthew Johnson</name>
+			<email>src@matthew.ath.cx</email>
+		</developer>
+		<developer>
+			<id>hypfvieh</id>
+			<name>David M.</name>
+			<email>hypfvieh@googlemail.com</email>
+		</developer>
+	</developers>
 </project>
