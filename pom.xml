@@ -9,7 +9,7 @@
 	<artifactId>libmatthew</artifactId>
 	<version>0.8.1</version>
 
-	<name>${project.artifactId}}</name>
+	<name>${project.artifactId}</name>
 
 	<description>
 		Some libraries from Matthew Johnson: http://www.matthew.ath.cx/projects/java/
