@@ -50,6 +50,7 @@ public class ExecOutputStream extends FilterOutputStream {
     * using the process to filter the stream.
     * @param os Writes to this OutputStream
     * @param p Filters data through stdin/out on this Process
+    * @throws IOException on error
     */
     public ExecOutputStream(OutputStream os, Process p) throws IOException {
         super(os);
@@ -65,6 +66,7 @@ public class ExecOutputStream extends FilterOutputStream {
     * using the process to filter the stream.
     * @param os Writes to this OutputStream
     * @param cmd Creates a Process from this string to filter data through stdin/out
+    * @throws IOException on error
     */
     public ExecOutputStream(OutputStream os, String cmd) throws IOException {
         this(os, Runtime.getRuntime().exec(cmd));
@@ -75,6 +77,7 @@ public class ExecOutputStream extends FilterOutputStream {
     * using the process to filter the stream.
     * @param os Writes to this OutputStream
     * @param cmd Creates a Process from this string array (command, arg, ...) to filter data through stdin/out
+    * @throws IOException on error
     */
     public ExecOutputStream(OutputStream os, String[] cmd) throws IOException {
         this(os, Runtime.getRuntime().exec(cmd));
@@ -86,6 +89,7 @@ public class ExecOutputStream extends FilterOutputStream {
     * @param os Writes to this OutputStream
     * @param cmd Creates a Process from this string to filter data through stdin/out
     * @param env Setup the environment for the command
+    * @throws IOException on error
     */
     public ExecOutputStream(OutputStream os, String cmd, String[] env) throws IOException {
         this(os, Runtime.getRuntime().exec(cmd, env));
@@ -97,6 +101,7 @@ public class ExecOutputStream extends FilterOutputStream {
     * @param os Writes to this OutputStream
     * @param cmd Creates a Process from this string array (command, arg, ...) to filter data through stdin/out
     * @param env Setup the environment for the command
+    * @throws IOException on error
     */
     public ExecOutputStream(OutputStream os, String[] cmd, String[] env) throws IOException {
         this(os, Runtime.getRuntime().exec(cmd, env));

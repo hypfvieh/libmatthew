@@ -44,70 +44,75 @@ import java.io.OutputStream;
  * &lt;do stuff that writes to the inputstream&gt;
  * </pre>
  */
-public class InOutCopier extends Thread
-{
-   private static final int BUFSIZE=1024;
-   private BufferedInputStream is;
-   private OutputStream os;
-   private boolean enable;
-   /**
+public class InOutCopier extends Thread {
+    private static final int    BUFSIZE = 1024;
+    private BufferedInputStream is;
+    private OutputStream        os;
+    private boolean             enable;
+
+    /**
     * Create a copier from an inputstream to an outputstream
     * @param _is The stream to copy from
     * @param _os the stream to copy to
+    * @throws IOException on error
     */
-   public InOutCopier(InputStream _is, OutputStream _os) throws IOException
-   {
-      this.is = new BufferedInputStream(_is);
-      this.os = _os;
-      this.enable = true;
-   }
-   /**
-    * Force close the stream without waiting for EOF on the source
+    public InOutCopier(InputStream _is, OutputStream _os) throws IOException {
+        this.is = new BufferedInputStream(_is);
+        this.os = _os;
+        this.enable = true;
+    }
+
+    /**
+    * Force close the stream without waiting for EOF on the source.
     */
-   public void close()
-   {
-      enable = false;
-      interrupt();
-   }
-   /**
-    * Flush the outputstream
+    public void close() {
+        enable = false;
+        interrupt();
+    }
+
+    /**
+    * Flush the outputstream.
+    * @throws IOException on error
     */
-   public void flush() throws IOException
-   {
-      os.flush();
-   }
-   /** Start the thread and wait to make sure its really started */
-   public synchronized void start()
-   {
-      super.start();
-      try {
-         wait();
-      } catch (InterruptedException exI) {}
-   }
-   /**
+    public void flush() throws IOException {
+        os.flush();
+    }
+
+    /** Start the thread and wait to make sure its really started.
+     */
+    public synchronized void start() {
+        super.start();
+        try {
+            wait();
+        } catch (InterruptedException exI) {
+        }
+    }
+
+    /**
     * Copies from the inputstream to the outputstream
     * until EOF on the inputstream or explicitly closed
     * @see #close()
     */
-   public void run()
-   {
-      byte[] buf = new byte[BUFSIZE];
-      synchronized (this) {
-         notifyAll();
-      }
-      while (enable)
-         try {
-            int n = is.read(buf);
-            if (0 > n)
-               break;
-            if (0 < n) {
-               os.write(buf, 0, (n> BUFSIZE? BUFSIZE:n));
-               os.flush();
+    public void run() {
+        byte[] buf = new byte[BUFSIZE];
+        synchronized (this) {
+            notifyAll();
+        }
+        while (enable)
+            try {
+                int n = is.read(buf);
+                if (0 > n)
+                    break;
+                if (0 < n) {
+                    os.write(buf, 0, (n > BUFSIZE ? BUFSIZE : n));
+                    os.flush();
+                }
+            } catch (IOException exIo) {
+                break;
             }
-         } catch (IOException exIo) {
-            break;
-         }
-      try { os.close(); } catch (IOException exIo) {}
-   }
+        try {
+            os.close();
+        } catch (IOException exIo) {
+        }
+    }
 }
-

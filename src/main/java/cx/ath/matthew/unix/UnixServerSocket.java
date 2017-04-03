@@ -54,6 +54,7 @@ public class UnixServerSocket implements Closeable {
     /**
     * Create a server socket bound to the given address.
     * @param _address Path to the socket.
+    * @throws IOException on error
     */
     public UnixServerSocket(UnixSocketAddress _address) throws IOException {
         bind(_address);
@@ -62,6 +63,7 @@ public class UnixServerSocket implements Closeable {
     /**
     * Create a server socket bound to the given address.
     * @param _address Path to the socket.
+    * @throws IOException on error
     */
     public UnixServerSocket(String _address) throws IOException {
         this(new UnixSocketAddress(_address));
@@ -70,6 +72,7 @@ public class UnixServerSocket implements Closeable {
     /**
     * Accepts a connection on the ServerSocket.
     * @return A UnixSocket connected to the accepted connection.
+    * @throws IOException on error
     */
     public UnixSocket accept() throws IOException {
         int clientSock = native_accept(sock);
@@ -78,6 +81,7 @@ public class UnixServerSocket implements Closeable {
 
     /**
     * Closes the ServerSocket.
+    * @throws IOException on error
     */
     public synchronized void close() throws IOException {
         native_close(sock);
@@ -89,6 +93,7 @@ public class UnixServerSocket implements Closeable {
     /**
     * Binds a server socket to the given address.
     * @param _address Path to the socket.
+    * @throws IOException on error
     */
     public void bind(UnixSocketAddress _address) throws IOException {
         if (bound)
@@ -102,6 +107,7 @@ public class UnixServerSocket implements Closeable {
     /**
     * Binds a server socket to the given address.
     * @param _address Path to the socket.
+    * @throws IOException on error
     */
     public void bind(String _address) throws IOException {
         bind(new UnixSocketAddress(_address));

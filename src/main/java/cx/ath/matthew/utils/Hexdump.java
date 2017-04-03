@@ -126,6 +126,8 @@ public final class Hexdump {
     * javafile.print("byte[] data = {")
     * javafile.print(Hexdump.toByteArray(data));
     * javafile.println("};");
+    * @param buf byte buffer
+    * @return String
     */
     public static String toByteArray(byte[] buf) {
         return toByteArray(buf, 0, buf.length);
@@ -139,6 +141,10 @@ public final class Hexdump {
     * javafile.print("byte[] data = {")
     * javafile.print(Hexdump.toByteArray(data));
     * javafile.println("};");
+    * @param buf byte buffer
+    * @param ofs offset
+    * @param len length
+    * @return String
     */
     public static String toByteArray(byte[] buf, int ofs, int len) {
         StringBuffer sb = new StringBuffer();

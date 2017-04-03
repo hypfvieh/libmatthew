@@ -31,17 +31,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.github.hypfvieh.system.NativeLibraryLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import cx.ath.matthew.debug.Debug;
+import com.github.hypfvieh.system.NativeLibraryLoader;
 
 /**
  * Represents a UnixSocket.
  */
 public class UnixSocket implements Closeable {
+
     static {
         NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "lib/");
     }
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private UnixSocketAddress address   = null;
     private USOutputStream    os        = null;
@@ -72,6 +76,7 @@ public class UnixSocket implements Closeable {
     /**
     * Create a socket connected to the given address.
     * @param _address The Unix Socket address to connect to
+    * @throws IOException on error
     */
     public UnixSocket(UnixSocketAddress _address) throws IOException {
         connect(_address);
@@ -80,6 +85,7 @@ public class UnixSocket implements Closeable {
     /**
     * Create a socket connected to the given address.
     * @param _address The Unix Socket address to connect to
+    * @throws IOException on error
     */
     public UnixSocket(String _address) throws IOException {
         this(new UnixSocketAddress(_address));
@@ -88,6 +94,7 @@ public class UnixSocket implements Closeable {
     /**
     * Connect the socket to this address.
     * @param _address The Unix Socket address to connect to
+    * @throws IOException on error
     */
     public void connect(UnixSocketAddress _address) throws IOException {
         if (connected)
@@ -104,6 +111,7 @@ public class UnixSocket implements Closeable {
     /**
     * Connect the socket to this address.
     * @param _address The Unix Socket address to connect to
+    * @throws IOException on error
     */
     public void connect(String _address) throws IOException {
         connect(new UnixSocketAddress(_address));
@@ -118,10 +126,12 @@ public class UnixSocket implements Closeable {
 
     /**
     * Closes the connection.
+    * @throws IOException on error
     */
     public synchronized void close() throws IOException {
-        if (Debug.debug)
-            Debug.print(Debug.INFO, "Closing socket");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Closing socket");
+        }
         native_close(sock);
         sock = 0;
         this.closed = true;
@@ -159,6 +169,7 @@ public class UnixSocket implements Closeable {
     * Send a single byte of data with credentials.
     * (Works on BSDs)
     * @param data The byte of data to send.
+    * @throws IOException on error
     */
     public void sendCredentialByte(byte data) throws IOException {
         if (!connected)
@@ -172,7 +183,8 @@ public class UnixSocket implements Closeable {
     * @see getPeerUID
     * @see getPeerPID
     * @see getPeerGID
-    * @param data The byte of data to send.
+    * @return read byte
+    * @throws IOException on error
     */
     public byte recvCredentialByte() throws IOException {
         if (!connected)
@@ -241,6 +253,7 @@ public class UnixSocket implements Closeable {
     * (Only does anything on linux, for other OS, you need
     * to use send/recv credentials)
     * @param enable Set to true for credentials to be passed.
+    * @throws IOException on error
     */
     public void setPassCred(boolean enable) throws IOException {
         native_set_pass_cred(sock, enable);
@@ -316,6 +329,7 @@ public class UnixSocket implements Closeable {
 
     /**
     * Set timeout of read requests.
+    * @param timeout to set
     */
     public void setSoTimeout(int timeout) {
         is.setSoTimeout(timeout);

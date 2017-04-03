@@ -66,6 +66,7 @@ public class UnixSocketAddress {
 
     /**
     * Return the path.
+    * @return the path as String
     */
     public String getPath() {
         return path;
@@ -73,6 +74,7 @@ public class UnixSocketAddress {
 
     /**
     * Returns true if this an address for an abstract socket.
+    * @return true if address is abstract socket
     */
     public boolean isAbstract() {
         return abs;

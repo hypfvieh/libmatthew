@@ -60,7 +60,9 @@ import cx.ath.matthew.utils.Hexdump;
   <pre>
    if (Debug.debug) Debug.print(Debug.INFO, "Debug Message");
   </pre>
+  @deprecated do not use this class for anything, it is just included for backward compatibility - Use slf4j for logging!
   */
+@Deprecated
 public final class Debug {
     /**
      This interface can be used to provide custom printing filters
@@ -113,50 +115,56 @@ public final class Debug {
     private static Map<Class<? extends Object>, FilterCommand> filterMap = new HashMap<Class<? extends Object>, FilterCommand>();
 
     /**
-     Set properties to configure debugging.
-     Format of properties is class =&gt; level, e.g.
-     <pre>
-      cx.ath.matthew.io.TeeOutputStream = INFO
-      cx.ath.matthew.io.DOMPrinter = DEBUG
-     </pre>
-     The debug level can be one of CRIT, ERR, WARN, INFO, DEBUG or VERBOSE which
-     correspond to all messages up to that level. The special words YES, ALL and TRUE
-     cause all messages to be printed regardless of level. All other terms disable
-     messages for that class. CRIT and ERR messages are always printed if debugging is enabled
-     unless explicitly disabled.
-     The special class name ALL can be used to set the default level for all classes.
-     @param _prop Properties object to use.
+     * Set properties to configure debugging.
+     * Format of properties is class =&gt; level, e.g.
+     * <pre>
+     *  cx.ath.matthew.io.TeeOutputStream = INFO
+     *  cx.ath.matthew.io.DOMPrinter = DEBUG
+     * </pre>
+     * The debug level can be one of CRIT, ERR, WARN, INFO, DEBUG or VERBOSE which
+     * correspond to all messages up to that level. The special words YES, ALL and TRUE
+     * cause all messages to be printed regardless of level. All other terms disable
+     * messages for that class. CRIT and ERR messages are always printed if debugging is enabled
+     * unless explicitly disabled.
+     * The special class name ALL can be used to set the default level for all classes.
+     * @param _prop Properties object to use.
     */
     public static void setProperties(Properties _prop) {
         Debug.prop = _prop;
     }
 
     /**
-     Read which class to debug on at which level from the given File.
-     Syntax the same as Java Properties files:
-     <pre>
-     &lt;class&gt; = &lt;debuglevel&gt;
-     </pre>
-     E.G.
-     <pre>
-      cx.ath.matthew.io.TeeOutputStream = INFO
-      cx.ath.matthew.io.DOMPrinter = DEBUG
-     </pre>
-     The debug level can be one of CRIT, ERR, WARN, INFO, DEBUG or VERBOSE which
-     correspond to all messages up to that level. The special words YES, ALL and TRUE
-     cause all messages to be printed regardless of level. All other terms disable
-     messages for that class. CRIT and ERR messages are always printed if debugging is enabled
-     unless explicitly disabled.
-     The special class name ALL can be used to set the default level for all classes.
-     @param f File to read from.
+     * Read which class to debug on at which level from the given File.
+     * Syntax the same as Java Properties files:
+     * <pre>
+     * &lt;class&gt; = &lt;debuglevel&gt;
+     * </pre>
+     * E.G.
+     * <pre>
+     *  cx.ath.matthew.io.TeeOutputStream = INFO
+     *  cx.ath.matthew.io.DOMPrinter = DEBUG
+     * </pre>
+     * The debug level can be one of CRIT, ERR, WARN, INFO, DEBUG or VERBOSE which
+     * correspond to all messages up to that level. The special words YES, ALL and TRUE
+     * cause all messages to be printed regardless of level. All other terms disable
+     * messages for that class. CRIT and ERR messages are always printed if debugging is enabled
+     * unless explicitly disabled.
+     * The special class name ALL can be used to set the default level for all classes.
+     * @param f File to read from.
+     * @throws IOException on error
     */
     public static void loadConfig(File f) throws IOException {
         prop = new Properties();
         prop.load(new FileInputStream(f));
     }
 
-    /** @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in. */
-    @Deprecated()
+    /**
+     * @param c class
+     * @param loglevel loglevel
+     * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+     * @return boolean
+     */
+    @Deprecated
     public static boolean debugging(Class<?> c, int loglevel) {
         if (debug) {
             if (null == c)
@@ -209,26 +217,35 @@ public final class Debug {
     }
 
     /**
-     Output to the given Stream */
+     * Output to the given Stream.
+     * @param p printstream
+     * @throws IOException on error
+     */
     public static void setOutput(PrintStream p) throws IOException {
         debugout = p;
     }
 
     /**
-     Output to the given file */
+     * Output to the given file.
+     * @param filename filename string
+     * @throws IOException on error
+     */
     public static void setOutput(String filename) throws IOException {
         debugout = new PrintStream(new FileOutputStream(filename, true));
     }
 
     /**
-     Output to the default debug.log */
+     * Output to the default debug.log
+     * @throws IOException on error
+     */
     public static void setOutput() throws IOException {
         setOutput("./debug.log");
     }
 
     /**
-      Log at DEBUG
-      @param d The object to log */
+     * Log at DEBUG
+     * @param d The object to log
+     */
     public static void print(Object d) {
         if (debug) {
             if (d instanceof String)
@@ -245,11 +262,11 @@ public final class Debug {
     }
 
     /**
-      Log at DEBUG
-      @param o The object doing the logging
-      @param d The object to log
-      @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
-    */
+     * Log at DEBUG.
+     * @param o The object doing the logging
+     * @param d The object to log
+     * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+     */
     @Deprecated()
     public static void print(Object o, Object d) {
         if (debug) {
@@ -262,13 +279,13 @@ public final class Debug {
     }
 
     /**
-      Log an Object
-      @param o The object doing the logging
-      @param loglevel The level to log at (DEBUG, WARN, etc)
-      @param d The object to log with d.toString()
-      @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
-    */
-    @Deprecated()
+     * Log an Object.
+     * @param o The object doing the logging
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param d The object to log with d.toString()
+     * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+     */
+    @Deprecated
     public static void print(Object o, int loglevel, Object d) {
         if (debug) {
             if (o instanceof Class)
@@ -280,13 +297,13 @@ public final class Debug {
     }
 
     /**
-      Log a String
-      @param o The object doing the logging
-      @param loglevel The level to log at (DEBUG, WARN, etc)
-      @param s The log message
-      @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
-    */
-    @Deprecated()
+      * Log a String.
+      * @param o The object doing the logging
+      * @param loglevel The level to log at (DEBUG, WARN, etc)
+      * @param s The log message
+      * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+      */
+    @Deprecated
     public static void print(Object o, int loglevel, String s) {
         if (debug) {
             if (o instanceof Class)
@@ -298,13 +315,13 @@ public final class Debug {
     }
 
     /**
-      Log a Throwable
-      @param o The object doing the logging
-      @param loglevel The level to log at (DEBUG, WARN, etc)
-      @param t The throwable to log with .toString and .printStackTrace
-      @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+     * Log a Throwable
+     * @param o The object doing the logging
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param t The throwable to log with .toString and .printStackTrace
+     * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
     */
-    @Deprecated()
+    @Deprecated
     public static void print(Object o, int loglevel, Throwable t) {
         if (debug) {
             if (o instanceof Class)
@@ -316,11 +333,11 @@ public final class Debug {
     }
 
     /**
-     Log a Throwable
-     @param c The class doing the logging
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param t The throwable to log with .toString and .printStackTrace
-     @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+     * Log a Throwable.
+     * @param c The class doing the logging
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param t The throwable to log with .toString and .printStackTrace
+     * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
     */
     @Deprecated()
     public static void print(Class<?> c, int loglevel, Throwable t) {
@@ -331,10 +348,10 @@ public final class Debug {
     }
 
     /**
-     Log a Throwable
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param t The throwable to log with .toString and .printStackTrace
-     @see #setThrowableTraces to turn on stack traces.
+     * Log a Throwable.
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param t The throwable to log with .toString and .printStackTrace
+     * @see #setThrowableTraces to turn on stack traces.
     */
     public static void print(int loglevel, Throwable t) {
         if (debug) {
@@ -359,12 +376,12 @@ public final class Debug {
     }
 
     /**
-     Log a byte array
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param b The byte array to print.
-     @see #setHexDump to enable hex dumping.
-     @see #setByteArrayCount to change how many bytes are printed.
-     @see #setByteArrayWidth to change the formatting width of hex. */
+     * Log a byte array.
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param b The byte array to print.
+     * @see #setHexDump to enable hex dumping.
+     * @see #setByteArrayCount to change how many bytes are printed.
+     * @see #setByteArrayWidth to change the formatting width of hex. */
     public static void print(int loglevel, byte[] b) {
         if (debug) {
             String timestr = "";
@@ -391,23 +408,23 @@ public final class Debug {
     }
 
     /**
-     Log a String
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param s The string to log with d.toString()
-    */
+     * Log a String.
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param s The string to log with d.toString()
+     */
     public static void print(int loglevel, String s) {
         if (debug)
             print(loglevel, (Object) s);
     }
 
     /**
-     Log an Object
-     @param c The class doing the logging
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param d The object to log with d.toString()
-     @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
-    */
-    @Deprecated()
+     * Log an Object.
+     * @param c The class doing the logging
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param d The object to log with d.toString()
+     * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+     */
+    @Deprecated
     public static void print(Class<?> c, int loglevel, Object d) {
         if (debug) {
             saveclass = c;
@@ -416,12 +433,12 @@ public final class Debug {
     }
 
     /**
-     Log a String
-     @param c The class doing the logging
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param s The log message
-     @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
-    */
+     * Log a String.
+     * @param c The class doing the logging
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param s The log message
+     * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+     */
     @Deprecated()
     public static void print(Class<?> c, int loglevel, String s) {
         if (debug) {
@@ -462,10 +479,10 @@ public final class Debug {
     }
 
     /**
-     Log an Object
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param o The object to log
-    */
+     * Log an Object.
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param o The object to log
+     */
     public static void print(int loglevel, Object o) {
         if (debug) {
             String timestr = "";
@@ -482,13 +499,13 @@ public final class Debug {
     }
 
     /**
-     Log a Map
-     @param o The object doing the logging
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param m The Map to print out
-     @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
-    */
-    @Deprecated()
+     * Log a Map.
+     * @param o The object doing the logging
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param m The Map to print out
+     * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+     */
+    @Deprecated
     public static void printMap(Object o, int loglevel, Map<?, ?> m) {
         if (debug) {
             if (o instanceof Class)
@@ -500,13 +517,13 @@ public final class Debug {
     }
 
     /**
-     Log a Map
-     @param c The class doing the logging
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param m The Map to print out
-     @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
-    */
-    @Deprecated()
+     * Log a Map.
+     * @param c The class doing the logging
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param m The Map to print out
+     * @deprecated In Java 1.5 calling class is automatically identified, no need to pass it in.
+     */
+    @Deprecated
     public static void printMap(Class<?> c, int loglevel, Map<?, ?> m) {
         if (debug) {
             saveclass = c;
@@ -515,18 +532,18 @@ public final class Debug {
     }
 
     /**
-     Log a Map at DEBUG log level
-     @param m The Map to print out
-    */
+     * Log a Map at DEBUG log level.
+     * @param m The Map to print out
+     */
     public static void printMap(Map<?, ?> m) {
         printMap(DEBUG, m);
     }
 
     /**
-     Log a Map
-     @param loglevel The level to log at (DEBUG, WARN, etc)
-     @param m The Map to print out
-    */
+     * Log a Map.
+     * @param loglevel The level to log at (DEBUG, WARN, etc)
+     * @param m The Map to print out
+     */
     public static void printMap(int loglevel, Map<?, ?> m) {
         if (debug) {
             String timestr = "";
@@ -550,56 +567,64 @@ public final class Debug {
     }
 
     /**
-     Enable or disable stack traces in Debuging throwables.
-    */
+     * Enable or disable stack traces in Debuging throwables.
+     * @param _ttrace boolean
+     */
     public static void setThrowableTraces(boolean _ttrace) {
         Debug.ttrace = _ttrace;
     }
 
     /**
-     Enable or disable timing in Debug messages.
+     * Enable or disable timing in Debug messages.
+     * @param _timing boolean
     */
     public static void setTiming(boolean _timing) {
         Debug.timing = _timing;
     }
 
     /**
-     Enable or disable line numbers.
-    */
+     * Enable or disable line numbers.
+     * @param _lines boolean
+     */
     public static void setLineNos(boolean _lines) {
         Debug.lines = _lines;
     }
 
     /**
-     Enable or disable hexdumps.
-    */
+     * Enable or disable hexdumps.
+     * @param _hexdump boolean
+     */
     public static void setHexDump(boolean _hexdump) {
         Debug.hexdump = _hexdump;
     }
 
     /**
-     Set the size of hexdumps.
-     (Default: 36)
-    */
+     * Set the size of hexdumps.
+     * (Default: 36)
+     * @param count int
+     */
     public static void setByteArrayCount(int count) {
         Debug.balen = count;
     }
 
     /**
-     Set the formatted width of hexdumps.
-     (Default: 80 chars)
-    */
+     * Set the formatted width of hexdumps.
+     * (Default: 80 chars)
+     * @param width int
+     */
     public static void setByteArrayWidth(int width) {
         Debug.bawidth = width;
     }
 
     /**
-     Add a filter command for a specific type.
-     This command will be called with the output stream
-     and the text to be sent. It should perform any
-     changes necessary to the text and then print the
-     result to the output stream.
-    */
+     * Add a filter command for a specific type.
+     * This command will be called with the output stream
+     * and the text to be sent. It should perform any
+     * changes necessary to the text and then print the
+     * result to the output stream.
+     * @param c class
+     * @param f filtercommand
+     */
     public static void addFilterCommand(Class<? extends Object> c, FilterCommand f) {
         filterMap.put(c, f);
     }
