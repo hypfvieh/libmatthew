@@ -66,6 +66,46 @@ JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1connect
 JNIEXPORT void JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1close
   (JNIEnv *, jobject, jint);
 
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_getPID
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1getPID
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_getUID
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1getUID
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_getGID
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1getGID
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_send_creds
+ * Signature: (IB)V
+ */
+JNIEXPORT void JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1send_1creds
+  (JNIEnv *, jobject, jint, jbyte);
+
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_recv_creds
+ * Signature: (I[I)B
+ */
+JNIEXPORT jbyte JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1recv_1creds
+  (JNIEnv *, jobject, jint, jintArray);
+
 #ifdef __cplusplus
 }
 #endif
@@ -77,15 +117,17 @@ JNIEXPORT void JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1close
 #ifdef __cplusplus
 extern "C" {
 #endif
-#undef cx_ath_matthew_unix_USInputStream_SKIP_BUFFER_SIZE
-#define cx_ath_matthew_unix_USInputStream_SKIP_BUFFER_SIZE 2048L
+#undef cx_ath_matthew_unix_USInputStream_MAX_SKIP_BUFFER_SIZE
+#define cx_ath_matthew_unix_USInputStream_MAX_SKIP_BUFFER_SIZE 2048L
+#undef cx_ath_matthew_unix_USInputStream_MSG_DONTWAIT
+#define cx_ath_matthew_unix_USInputStream_MSG_DONTWAIT 64L
 /*
  * Class:     cx_ath_matthew_unix_USInputStream
  * Method:    native_recv
- * Signature: (I[BII)I
+ * Signature: (I[BIIII)I
  */
 JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USInputStream_native_1recv
-  (JNIEnv *, jobject, jint, jbyteArray, jint, jint);
+  (JNIEnv *, jobject, jint, jbyteArray, jint, jint, jint, jint);
 
 #ifdef __cplusplus
 }
@@ -103,8 +145,16 @@ extern "C" {
  * Method:    native_send
  * Signature: (I[BII)I
  */
-JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USOutputStream_native_1send
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USOutputStream_native_1send__I_3BII
   (JNIEnv *, jobject, jint, jbyteArray, jint, jint);
+
+/*
+ * Class:     cx_ath_matthew_unix_USOutputStream
+ * Method:    native_send
+ * Signature: (I[[B)I
+ */
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USOutputStream_native_1send__I_3_3B
+  (JNIEnv *, jobject, jint, jobjectArray);
 
 #ifdef __cplusplus
 }
