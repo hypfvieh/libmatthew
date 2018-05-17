@@ -30,6 +30,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +47,10 @@ public class UnixSocket implements Closeable {
     static {
         if (SystemUtil.isMacOs()) {
             String macOsMajorVersion = SystemUtil.getMacOsMajorVersion();
-            NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "macos/" + macOsMajorVersion + "/");
+            List<String> osVersionsWithSameLib = Arrays.asList("10.6", "10.7", "10.8", "10.9", "10.10", "10.11", "10.12", "10.13");
+            if (osVersionsWithSameLib.contains(macOsMajorVersion)) {
+                NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "macos/" + macOsMajorVersion + "/");
+            }
         } else {
             NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "lib/");
         }
