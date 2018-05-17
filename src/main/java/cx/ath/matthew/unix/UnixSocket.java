@@ -35,8 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.hypfvieh.system.NativeLibraryLoader;
-
-import cx.ath.matthew.utils.OsHelper;
+import com.github.hypfvieh.util.SystemUtil;
 
 /**
  * Represents a UnixSocket.
@@ -44,8 +43,8 @@ import cx.ath.matthew.utils.OsHelper;
 public class UnixSocket implements Closeable {
 
     static {
-        if (OsHelper.isMacOs()) {
-            String macOsMajorVersion = OsHelper.getMacOsMajorVersion();
+        if (SystemUtil.isMacOs()) {
+            String macOsMajorVersion = SystemUtil.getMacOsMajorVersion();
             NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "macos/" + macOsMajorVersion + "/");
         } else {
             NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "lib/");
