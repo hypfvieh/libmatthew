@@ -31,13 +31,19 @@ import java.io.IOException;
 
 import com.github.hypfvieh.system.NativeLibraryLoader;
 
+import cx.ath.matthew.utils.OsHelper;
+
 /**
  * Represents a listening UNIX Socket.
  */
 public class UnixServerSocket implements Closeable {
     static {
-        //System.loadLibrary("unix-java");
-        NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "lib/");
+        if (OsHelper.isMacOs()) {
+            String macOsMajorVersion = OsHelper.getMacOsMajorVersion();
+            NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "macos/" + macOsMajorVersion + "/");
+        } else {
+            NativeLibraryLoader.loadLibrary(true, "libunix-java.so", "lib/");
+        }
     }
 
     private UnixSocketAddress address = null;
